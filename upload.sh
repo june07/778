@@ -42,6 +42,7 @@ IMAGE4="${IMAGE_DEST_PREFIX}-${HOSTNAME}-${TIMESTAMP}-4.jpg"
 IMAGE5="${IMAGE_DEST_PREFIX}-${HOSTNAME}-${TIMESTAMP}-5.jpg"
 IMAGE6="${IMAGE_DEST_PREFIX}-${HOSTNAME}-${TIMESTAMP}-6.jpg"
 IMAGE7="${IMAGE_DEST_PREFIX}-${HOSTNAME}-${TIMESTAMP}-7.jpg"
+IMAGE8="${IMAGE_DEST_PREFIX}-${HOSTNAME}-${TIMESTAMP}-8.jpg"
 
 FLIP_ARG1=""
 FLIP_ARG2=""
@@ -97,6 +98,14 @@ git config --global init.defaultBranch $BRANCH
 git config --global user.name "adrian@${HOSTNAME}"
 git config --global user.email "778@onezerohosting.com"
 
+if [ "$HOSTNAME" == "art" ]; then
+		SPARSE_FILE_LIST="/upload.sh /snapshot-1.jpg /snapshot-2.jpg ${IMAGE1#${REPO_DIR}/} ${IMAGE2#${REPO_DIR}/}"
+elif [ "$HOSTNAME" == "library" ]; then
+    SPARSE_FILE_LIST="/upload.sh /snapshot-3.jpg /snapshot-4.jpg ${IMAGE1#${REPO_DIR}/} ${IMAGE2#${REPO_DIR}/}"
+elif [ "$HOSTNAME" == "aaliyah" ]; then
+    SPARSE_FILE_LIST="/upload.sh /snapshot-*.jpg ${IMAGE1#${REPO_DIR}/} ${IMAGE2#${REPO_DIR}/} ${IMAGE3#${REPO_DIR}/} ${IMAGE4#${REPO_DIR}/} ${IMAGE5#${REPO_DIR}/} ${IMAGE6#${REPO_DIR}/} ${IMAGE7#${REPO_DIR}/} ${IMAGE8#${REPO_DIR}/}"
+fi
+
 # 2. Clone the repo if it doesn't exist locally yet (run this setup once beforehand)
 if [ ! -d "$REPO_DIR/.git" ]; then
 	if [ "$REPO_SETUP" == true ]; then
@@ -112,32 +121,12 @@ if [ ! -d "$REPO_DIR/.git" ]; then
 	fi
 
 	git sparse-checkout set --no-cone true
-
-	if [ "$HOSTNAME" == "art" ]; then
-		SPARSE_FILE_LIST="/upload.sh /snapshot-1.jpg /snapshot-2.jpg ${IMAGE1#${REPO_DIR}/} ${IMAGE2#${REPO_DIR}/}"
-	elif [ "$HOSTNAME" == "library" ]; then
-		SPARSE_FILE_LIST="/upload.sh /snapshot-3.jpg /snapshot-4.jpg ${IMAGE1#${REPO_DIR}/} ${IMAGE2#${REPO_DIR}/}"
-	elif [ "$HOSTNAME" == "aaliyah" ]; then
-		SPARSE_FILE_LIST="/upload.sh /snapshot-*.jpg ${IMAGE1#${REPO_DIR}/} ${IMAGE2#${REPO_DIR}/} ${IMAGE3#${REPO_DIR}/} ${IMAGE4#${REPO_DIR}/} ${IMAGE5#${REPO_DIR}/} ${IMAGE6#${REPO_DIR}/} ${IMAGE7#${REPO_DIR}/}"
-	fi
-
 	git sparse-checkout set $SPARSE_FILE_LIST
 	git pull origin "$BRANCH"
 else
 	cd $REPO_DIR
 
 	git sparse-checkout set --no-cone true
-
-	if [ "$HOSTNAME" == "art" ]; then
-		SPARSE_FILE_LIST="/upload.sh /snapshot-1.jpg /snapshot-2.jpg ${IMAGE1#${REPO_DIR}/} ${IMAGE2#${REPO_DIR}/}"
-                #git sparse-checkout set /upload.sh /snapshot-1.jpg /snapshot-2.jpg ${IMAGE1#${REPO_DIR}/} ${IMAGE2#${REPO_DIR}/}
-        elif [ "$HOSTNAME" == "library" ]; then
-                #git sparse-checkout set /upload.sh /snapshot-3.jpg /snapshot-4.jpg ${IMAGE1#${REPO_DIR}/} ${IMAGE2#${REPO_DIR}/}
-		SPARSE_FILE_LIST="/upload.sh /snapshot-3.jpg /snapshot-4.jpg ${IMAGE1#${REPO_DIR}/} ${IMAGE2#${REPO_DIR}/}"
-        elif [ "$HOSTNAME" == "aaliyah" ]; then
-                #git sparse-checkout set /upload.sh /snapshot-*.jpg ${IMAGE1#${REPO_DIR}/} ${IMAGE2#${REPO_DIR}/} ${IMAGE3#${REPO_DIR}/} ${IMAGE4#${REPO_DIR}/} ${IMAGE5#${REPO_DIR}/} ${IMAGE6#${REPO_DIR}/} ${IMAGE7#${REPO_DIR}/}
-		SPARSE_FILE_LIST="/upload.sh /snapshot-*.jpg ${IMAGE1#${REPO_DIR}/} ${IMAGE2#${REPO_DIR}/} ${IMAGE3#${REPO_DIR}/} ${IMAGE4#${REPO_DIR}/} ${IMAGE5#${REPO_DIR}/} ${IMAGE6#${REPO_DIR}/} ${IMAGE7#${REPO_DIR}/}"
-        fi
 fi
 
 if [ ! -d $REPO_DIR_DAY ]; then
@@ -281,31 +270,25 @@ elif [ "$HOSTNAME" == "aaliyah" ]; then
 	    "storefront-front.jpg|$IMAGE5|snapshot-9.jpg"
 	    "storefront-tower.jpg|$IMAGE6|snapshot-10.jpg"
 	    "storefront-kitchen.jpg|$IMAGE7|snapshot-11.jpg"
+        "garage-north.jpg|$IMAGE8|snapshot-12.jpg"
     )
 
     for extra in "${extra_cam_images[@]}"; do
-	IFS='|' read -r image_name image_var snapshot_name <<< "$extra"
-	    
-	cp ~/ha-storage/${image_name} $TEMP_IMAGE
-	# 2. Overlay timestamp and save to final destination
-	convert "$TEMP_IMAGE" \
-		-gravity SouthEast \
-		-background 'rgba(0, 0, 0, 0.5)' \
-		-fill white \
-		-font Helvetica \
-		-pointsize 18 \
-		-splice 0x28 \
-		-annotate +10+5 " $DATETIMESTAMP " \
-		"$image_var"
-	cp $image_var "${REPO_DIR}/${snapshot_name}"
-	    #cp ~/ha-storage/${image_name} $image_var && cp ~/ha-storage/${image_name} "${REPO_DIR}/${snapshot_name}"
+        IFS='|' read -r image_name image_var snapshot_name <<< "$extra"
+            
+        cp ~/ha-storage/${image_name} $TEMP_IMAGE
+        # 2. Overlay timestamp and save to final destination
+        convert "$TEMP_IMAGE" \
+            -gravity SouthEast \
+            -background 'rgba(0, 0, 0, 0.5)' \
+            -fill white \
+            -font Helvetica \
+            -pointsize 18 \
+            -splice 0x28 \
+            -annotate +10+5 " $DATETIMESTAMP " \
+            "$image_var"
+	    cp $image_var "${REPO_DIR}/${snapshot_name}"
     done
-
-#    cp ~/ha-storage/storefront-corner.jpg $IMAGE3 && cp ~/ha-storage/storefront-corner.jpg "${REPO_DIR}/snapshot-7.jpg"
-#    cp ~/ha-storage/storefront-edge.jpg $IMAGE4 && cp ~/ha-storage/storefront-edge.jpg "${REPO_DIR}/snapshot-8.jpg"
-#    cp ~/ha-storage/storefront-front.jpg $IMAGE5 && cp ~/ha-storage/storefront-front.jpg "${REPO_DIR}/snapshot-9.jpg"
-#    cp ~/ha-storage/storefront-tower.jpg $IMAGE6 && cp ~/ha-storage/storefront-tower.jpg "${REPO_DIR}/snapshot-10.jpg"
-#    cp ~/ha-storage/storefront-kitchen.jpg $IMAGE7 && cp ~/ha-storage/storefront-kitchen.jpg "${REPO_DIR}/snapshot-11.jpg"
 fi
 
 arr=($SPARSE_FILE_LIST); SPARSE_FILE_LIST="${arr[@]#/}"
