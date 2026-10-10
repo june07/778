@@ -202,12 +202,12 @@ capture_image() {
                 echo "$(date): Resetting USB port at $sys_path..."
                 
                 # Cut power to the port[cite: 1]
-                sudo echo 0 > "$sys_path/authorized" 2>/dev/null
+		echo 0 | sudo tee "$sys_path/authorized" > /dev/null
                 sleep 2
                 
                 # Restore power to force re-enumeration[cite: 1]
-                sudo echo 1 > "$sys_path/authorized" 2>/dev/null
-                sleep 4 # Give the camera time to reinitialize
+		echo 1 | sudo tee "$sys_path/authorized" > /dev/null
+                sleep 10 # Give the camera time to reinitialize
                 
                 if [ -f "$CACHE_FILE" ]; then
                     #retry capture
