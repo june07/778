@@ -35,6 +35,7 @@ BRANCH="main" # Change to 'master' if your default branch is master
 TIMESTAMP=`date +%s`
 DATETIMESTAMP=$(TZ="America/Chicago" date +"%Y-%m-%d %H:%M:%S")
 CACHE_FILE="/tmp/camera_devices.cache"
+RECOVERY_ATTEMPT=false
 IMAGE1="${IMAGE_DEST_PREFIX}-${HOSTNAME}-${TIMESTAMP}-1.jpg"
 IMAGE2="${IMAGE_DEST_PREFIX}-${HOSTNAME}-${TIMESTAMP}-2.jpg"
 IMAGE3="${IMAGE_DEST_PREFIX}-${HOSTNAME}-${TIMESTAMP}-3.jpg"
@@ -192,6 +193,10 @@ capture_image() {
 
     # Check if capture failed (non-zero exit code or missing output image)
     if [ $? -ne 0 ] || [ ! -f "$TEMP_IMAGE" ]; then
+	if [ "$RECOVERY_ATTEMPT" == "true" ]; then
+		echo "skipping hardware recovery since it failed once..."
+		exit 1
+	fi
         echo "$(date): Capture failed on $dev. Attempting hardware recovery..."
         
         if [ -f "$CACHE_FILE" ]; then
@@ -207,8 +212,10 @@ capture_image() {
                 
                 # Restore power to force re-enumeration[cite: 1]
 		echo 1 | sudo tee "$sys_path/authorized" > /dev/null
-                sleep 10 # Give the camera time to reinitialize
+                sleep 5 # Give the camera time to reinitialize
                 
+		RECOVERY_ATTEMPT=true
+
                 if [ -f "$CACHE_FILE" ]; then
                     #retry capture
                     capture_image "$dev" "$flip" "$TEMP_IMAGE"
