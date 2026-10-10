@@ -214,7 +214,7 @@ capture_image() {
                     capture_image "$dev" "$flip" "$TEMP_IMAGE"
                 fi
                 # Remove cache so it rebuilds fresh paths/nodes on next check
-                rm -f "$CACHE_FILE"
+#                rm -f "$CACHE_FILE"
             else
                 echo "$(date): Error: Could not find matching sysfs path for $dev in cache."
             fi
