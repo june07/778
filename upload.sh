@@ -44,6 +44,9 @@ IMAGE5="${IMAGE_DEST_PREFIX}-${HOSTNAME}-${TIMESTAMP}-5.jpg"
 IMAGE6="${IMAGE_DEST_PREFIX}-${HOSTNAME}-${TIMESTAMP}-6.jpg"
 IMAGE7="${IMAGE_DEST_PREFIX}-${HOSTNAME}-${TIMESTAMP}-7.jpg"
 IMAGE8="${IMAGE_DEST_PREFIX}-${HOSTNAME}-${TIMESTAMP}-8.jpg"
+IMAGE9="${IMAGE_DEST_PREFIX}-${HOSTNAME}-${TIMESTAMP}-9.jpg"
+IMAGE10="${IMAGE_DEST_PREFIX}-${HOSTNAME}-${TIMESTAMP}-10.jpg"
+IMAGE11="${IMAGE_DEST_PREFIX}-${HOSTNAME}-${TIMESTAMP}-11.jpg"
 
 FLIP_ARG1=""
 FLIP_ARG2=""
@@ -104,7 +107,8 @@ if [ "$HOSTNAME" == "art" ]; then
 elif [ "$HOSTNAME" == "library" ]; then
     SPARSE_FILE_LIST="/upload.sh /snapshot-3.jpg /snapshot-4.jpg ${IMAGE1#${REPO_DIR}/} ${IMAGE2#${REPO_DIR}/}"
 elif [ "$HOSTNAME" == "aaliyah" ]; then
-    SPARSE_FILE_LIST="/upload.sh /snapshot-*.jpg ${IMAGE1#${REPO_DIR}/} ${IMAGE2#${REPO_DIR}/} ${IMAGE3#${REPO_DIR}/} ${IMAGE4#${REPO_DIR}/} ${IMAGE5#${REPO_DIR}/} ${IMAGE6#${REPO_DIR}/} ${IMAGE7#${REPO_DIR}/} ${IMAGE8#${REPO_DIR}/}"
+#    SPARSE_FILE_LIST="/upload.sh /snapshot-*.jpg ${IMAGE1#${REPO_DIR}/} ${IMAGE2#${REPO_DIR}/} ${IMAGE3#${REPO_DIR}/} ${IMAGE4#${REPO_DIR}/} ${IMAGE5#${REPO_DIR}/} ${IMAGE6#${REPO_DIR}/} ${IMAGE7#${REPO_DIR}/} ${IMAGE8#${REPO_DIR}/}"
+    SPARSE_FILE_LIST="/upload.sh /snapshot-*.jpg ${IMAGE3#${REPO_DIR}/} ${IMAGE4#${REPO_DIR}/} ${IMAGE5#${REPO_DIR}/} ${IMAGE6#${REPO_DIR}/} ${IMAGE7#${REPO_DIR}/} ${IMAGE8#${REPO_DIR}/}"
 fi
 
 # 2. Clone the repo if it doesn't exist locally yet (run this setup once beforehand)
@@ -268,16 +272,19 @@ elif [ "$HOSTNAME" == "library" ]; then
 	cp $IMAGE1 "${REPO_DIR}/snapshot-3.jpg"
 	cp $IMAGE2 "${REPO_DIR}/snapshot-4.jpg"
 elif [ "$HOSTNAME" == "aaliyah" ]; then
-	cp $IMAGE1 "${REPO_DIR}/snapshot-5.jpg"
-	cp $IMAGE2 "${REPO_DIR}/snapshot-6.jpg"
+#	cp $IMAGE1 "${REPO_DIR}/snapshot-5.jpg"
+#	cp $IMAGE2 "${REPO_DIR}/snapshot-6.jpg"
 
     extra_cam_images=(
-	    "storefront-corner.jpg|$IMAGE3|snapshot-7.jpg"
-	    "storefront-edge.jpg|$IMAGE4|snapshot-8.jpg"
-	    "storefront-front.jpg|$IMAGE5|snapshot-9.jpg"
-	    "storefront-tower.jpg|$IMAGE6|snapshot-10.jpg"
-	    "storefront-kitchen.jpg|$IMAGE7|snapshot-11.jpg"
-        "garage-north.jpg|$IMAGE8|snapshot-12.jpg"
+	"storefront-outside-corner.jpg|$IMAGE3|snapshot-7.jpg"
+	"storefront-outside-edge.jpg|$IMAGE4|snapshot-8.jpg"
+	"front-outside-entry.jpg|$IMAGE5|snapshot-9.jpg"
+	"tower-outside-entry.jpg|$IMAGE6|snapshot-10.jpg"
+        "garage-outside-north.jpg|$IMAGE8|snapshot-12.jpg"
+	"datacenter-inside.jpg|$IMAGE7|snapshot-11.jpg"
+	"entry-inside.jpg|$IMAGE9|snapshot-13.jpg"
+	"datacenter-inside.jpg|$IMAGE10|snapshot-14.jpg"
+	"storefront-inside.jpg|$IMAGE11|snapshot-15.jpg"
     )
 
     for extra in "${extra_cam_images[@]}"; do
