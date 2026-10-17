@@ -237,27 +237,27 @@ capture_image() {
 }
 
 if [ "$HOSTNAME" != "envy" ]; then
-	# 1. Overlay timestamp and save as the "live" pointer
-	for cam in "${cameras[@]}"; do
-	    IFS='|' read -r dev flip img <<< "$cam"
-	    IMAGE_NAME=$(basename $img)
-	    TEMP_IMAGE="/tmp/$IMAGE_NAME"
-	 
-	    capture_image "$dev" "$flip" "$TEMP_IMAGE"
-	
-	    # 2. Overlay timestamp and save to final destination
-	    convert "$TEMP_IMAGE" \
-	      -gravity SouthEast \
-	      -background 'rgba(0, 0, 0, 0.5)' \
-	      -fill white \
-	      -font Helvetica \
-	      -pointsize 18 \
-	      -splice 0x28 \
-	      -annotate +10+5 " $DATETIMESTAMP " \
-	      "$img"
-	
-	    rm $TEMP_IMAGE
-	done
+    # 1. Overlay timestamp and save as the "live" pointer
+    for cam in "${cameras[@]}"; do
+        IFS='|' read -r dev flip img <<< "$cam"
+        IMAGE_NAME=$(basename $img)
+        TEMP_IMAGE="/tmp/$IMAGE_NAME"
+     
+        capture_image "$dev" "$flip" "$TEMP_IMAGE"
+    
+        # 2. Overlay timestamp and save to final destination
+        convert "$TEMP_IMAGE" \
+          -gravity SouthEast \
+          -background 'rgba(0, 0, 0, 0.5)' \
+          -fill white \
+          -font Helvetica \
+          -pointsize 18 \
+          -splice 0x28 \
+          -annotate +10+5 " $DATETIMESTAMP " \
+          "$img"
+    
+        rm $TEMP_IMAGE
+    done
 fi
 
 # 3. Enter repo, commit, and push
@@ -291,6 +291,7 @@ elif [ "$HOSTNAME" == "envy" ]; then
 
     for extra in "${extra_cam_images[@]}"; do
         IFS='|' read -r image_name image_var snapshot_name <<< "$extra"
+        TEMP_IMAGE="/tmp/$image_name"
             
         sudo cp /root/homeassistant/storage/${image_name} $TEMP_IMAGE
         # 2. Overlay timestamp and save to final destination
