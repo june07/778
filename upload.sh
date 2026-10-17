@@ -107,7 +107,8 @@ if [ "$HOSTNAME" == "art" ]; then
 elif [ "$HOSTNAME" == "library" ]; then
     SPARSE_FILE_LIST="/upload.sh /snapshot-3.jpg /snapshot-4.jpg ${IMAGE1#${REPO_DIR}/} ${IMAGE2#${REPO_DIR}/}"
 elif [ "$HOSTNAME" == "aaliyah" ]; then
-#    SPARSE_FILE_LIST="/upload.sh /snapshot-*.jpg ${IMAGE1#${REPO_DIR}/} ${IMAGE2#${REPO_DIR}/} ${IMAGE3#${REPO_DIR}/} ${IMAGE4#${REPO_DIR}/} ${IMAGE5#${REPO_DIR}/} ${IMAGE6#${REPO_DIR}/} ${IMAGE7#${REPO_DIR}/} ${IMAGE8#${REPO_DIR}/}"
+    SPARSE_FILE_LIST="/upload.sh /snapshot-*.jpg ${IMAGE1#${REPO_DIR}/} ${IMAGE2#${REPO_DIR}/} ${IMAGE3#${REPO_DIR}/} ${IMAGE4#${REPO_DIR}/} ${IMAGE5#${REPO_DIR}/} ${IMAGE6#${REPO_DIR}/} ${IMAGE7#${REPO_DIR}/} ${IMAGE8#${REPO_DIR}/}"
+elif [ "$HOSTNAME" == "envy" ]; then
     SPARSE_FILE_LIST="/upload.sh /snapshot-*.jpg ${IMAGE3#${REPO_DIR}/} ${IMAGE4#${REPO_DIR}/} ${IMAGE5#${REPO_DIR}/} ${IMAGE6#${REPO_DIR}/} ${IMAGE7#${REPO_DIR}/} ${IMAGE8#${REPO_DIR}/}"
 fi
 
@@ -235,28 +236,29 @@ capture_image() {
     fi
 }
 
-# 1. Overlay timestamp and save as the "live" pointer
-for cam in "${cameras[@]}"; do
-    IFS='|' read -r dev flip img <<< "$cam"
-    IMAGE_NAME=$(basename $img)
-    TEMP_IMAGE="/tmp/$IMAGE_NAME"
- 
-    capture_image "$dev" "$flip" "$TEMP_IMAGE"
-
-    # 2. Overlay timestamp and save to final destination
-    convert "$TEMP_IMAGE" \
-      -gravity SouthEast \
-      -background 'rgba(0, 0, 0, 0.5)' \
-      -fill white \
-      -font Helvetica \
-      -pointsize 18 \
-      -splice 0x28 \
-      -annotate +10+5 " $DATETIMESTAMP " \
-      "$img"
-
-    rm $TEMP_IMAGE
-done
-
+if [ "$HOSTNAME" != "envy" ]; then
+	# 1. Overlay timestamp and save as the "live" pointer
+	for cam in "${cameras[@]}"; do
+	    IFS='|' read -r dev flip img <<< "$cam"
+	    IMAGE_NAME=$(basename $img)
+	    TEMP_IMAGE="/tmp/$IMAGE_NAME"
+	 
+	    capture_image "$dev" "$flip" "$TEMP_IMAGE"
+	
+	    # 2. Overlay timestamp and save to final destination
+	    convert "$TEMP_IMAGE" \
+	      -gravity SouthEast \
+	      -background 'rgba(0, 0, 0, 0.5)' \
+	      -fill white \
+	      -font Helvetica \
+	      -pointsize 18 \
+	      -splice 0x28 \
+	      -annotate +10+5 " $DATETIMESTAMP " \
+	      "$img"
+	
+	    rm $TEMP_IMAGE
+	done
+fi
 
 # 3. Enter repo, commit, and push
 cd "$REPO_DIR" || exit 1
@@ -271,7 +273,7 @@ if [ "$HOSTNAME" == "art" ]; then
 elif [ "$HOSTNAME" == "library" ]; then
 	cp $IMAGE1 "${REPO_DIR}/snapshot-3.jpg"
 	cp $IMAGE2 "${REPO_DIR}/snapshot-4.jpg"
-elif [ "$HOSTNAME" == "aaliyah" ]; then
+elif [ "$HOSTNAME" == "envy" ]; then
 #	cp $IMAGE1 "${REPO_DIR}/snapshot-5.jpg"
 #	cp $IMAGE2 "${REPO_DIR}/snapshot-6.jpg"
 
@@ -290,7 +292,7 @@ elif [ "$HOSTNAME" == "aaliyah" ]; then
     for extra in "${extra_cam_images[@]}"; do
         IFS='|' read -r image_name image_var snapshot_name <<< "$extra"
             
-        cp ~/ha-storage/${image_name} $TEMP_IMAGE
+        sudo cp /root/homeassistant/storage/${image_name} $TEMP_IMAGE
         # 2. Overlay timestamp and save to final destination
         convert "$TEMP_IMAGE" \
             -gravity SouthEast \
