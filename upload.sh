@@ -329,7 +329,9 @@ fi
 
 arr=($SPARSE_FILE_LIST); SPARSE_FILE_LIST="${arr[@]#/}"
 
-ls -laR ${REPO_DIR}/homeassistant/
+cd "$REPO_DIR" || exit 1
+
+ls -laR .
 ls -d $SPARSE_FILE_LIST | xargs -t -r git add
 git status
 
