@@ -283,18 +283,18 @@ elif [ "$HOSTNAME" == "envy" ]; then
     sudo rsync -avu "/root/homeassistant/config/backups" "${REPO_DIR}/homeassistant/"
     sudo chown -R adrian:adrian /home/adrian/778-repo/
 
-    ls -laR "${REPO_DIR}/homeassistant/"
+    ls -laR "${REPO_DIR}"
     
     extra_cam_images=(
-	"storefront-outside-corner.jpg|$IMAGE3|snapshot-7.jpg"
-	"storefront-outside-edge.jpg|$IMAGE4|snapshot-8.jpg"
-	"front-outside-entry.jpg|$IMAGE5|snapshot-9.jpg"
-	"tower-outside-entry.jpg|$IMAGE6|snapshot-10.jpg"
+        "storefront-outside-corner.jpg|$IMAGE3|snapshot-7.jpg"
+        "storefront-outside-edge.jpg|$IMAGE4|snapshot-8.jpg"
+        "front-outside-entry.jpg|$IMAGE5|snapshot-9.jpg"
+        "tower-outside-entry.jpg|$IMAGE6|snapshot-10.jpg"
         "garage-outside-north.jpg|$IMAGE8|snapshot-12.jpg"
-	"datacenter-inside.jpg|$IMAGE7|snapshot-11.jpg"
-	"entry-inside.jpg|$IMAGE9|snapshot-13.jpg"
-	"datacenter-inside.jpg|$IMAGE10|snapshot-14.jpg"
-	"storefront-inside.jpg|$IMAGE11|snapshot-15.jpg"
+        "datacenter-inside.jpg|$IMAGE7|snapshot-11.jpg"
+        "entry-inside.jpg|$IMAGE9|snapshot-13.jpg"
+        "datacenter-inside.jpg|$IMAGE10|snapshot-14.jpg"
+        "storefront-inside.jpg|$IMAGE11|snapshot-15.jpg"
     )
 
     for extra in "${extra_cam_images[@]}"; do
