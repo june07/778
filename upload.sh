@@ -283,7 +283,7 @@ elif [ "$HOSTNAME" == "envy" ]; then
     sudo rsync -avu "/root/homeassistant/config/backups" "${REPO_DIR}/homeassistant/"
     sudo chown -R adrian:adrian /home/adrian/778-repo/
 
-    ls -laR "${REPO_DIR}"
+    ls -lR "${REPO_DIR}"
     
     extra_cam_images=(
         "storefront-outside-corner.jpg|$IMAGE3|snapshot-7.jpg"
