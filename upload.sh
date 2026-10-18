@@ -318,8 +318,7 @@ fi
 
 arr=($SPARSE_FILE_LIST); SPARSE_FILE_LIST="${arr[@]#/}"
 
-ls -d $SPARSE_FILE_LIST | xargs -r echo "Adding the following files to git: $0"
-ls -d $SPARSE_FILE_LIST | xargs -r git add
+ls -d $SPARSE_FILE_LIST | xargs -t -r git add
 git status
 git commit -m "Auto-update snapshot: $(date -u)"
 git push origin "$BRANCH"
