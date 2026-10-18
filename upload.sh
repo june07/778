@@ -103,7 +103,6 @@ git config --global user.name "adrian@${HOSTNAME}"
 git config --global user.email "778@onezerohosting.com"
 
 SPARSE_FILE_LIST_HA=$(sudo ls /root/homeassistant/config/backups | grep ".tar" | sed 's|^|/homeassistant/backups/|' | paste -sd " ")
-SPARSE_FILE_LIST_HA_BACKUP_DIR="/homeassistant/backups"
 
 if [ "$HOSTNAME" == "art" ]; then
 		SPARSE_FILE_LIST="/upload.sh /snapshot-1.jpg /snapshot-2.jpg ${IMAGE1#${REPO_DIR}/} ${IMAGE2#${REPO_DIR}/}"
@@ -112,7 +111,7 @@ elif [ "$HOSTNAME" == "library" ]; then
 elif [ "$HOSTNAME" == "aaliyah" ]; then
     SPARSE_FILE_LIST="/upload.sh /snapshot-*.jpg ${IMAGE1#${REPO_DIR}/} ${IMAGE2#${REPO_DIR}/} ${IMAGE3#${REPO_DIR}/} ${IMAGE4#${REPO_DIR}/} ${IMAGE5#${REPO_DIR}/} ${IMAGE6#${REPO_DIR}/} ${IMAGE7#${REPO_DIR}/} ${IMAGE8#${REPO_DIR}/}"
 elif [ "$HOSTNAME" == "envy" ]; then
-    SPARSE_FILE_LIST="/upload.sh /snapshot-*.jpg ${IMAGE3#${REPO_DIR}/} ${IMAGE4#${REPO_DIR}/} ${IMAGE5#${REPO_DIR}/} ${IMAGE6#${REPO_DIR}/} ${IMAGE7#${REPO_DIR}/} ${IMAGE8#${REPO_DIR}/} ${SPARSE_FILE_LIST_HA_BACKUP_DIR}"
+    SPARSE_FILE_LIST="/upload.sh /snapshot-*.jpg ${IMAGE3#${REPO_DIR}/} ${IMAGE4#${REPO_DIR}/} ${IMAGE5#${REPO_DIR}/} ${IMAGE6#${REPO_DIR}/} ${IMAGE7#${REPO_DIR}/} ${IMAGE8#${REPO_DIR}/} ${SPARSE_FILE_LIST_HA}"
 fi
 
 # 2. Clone the repo if it doesn't exist locally yet (run this setup once beforehand)
@@ -316,6 +315,8 @@ elif [ "$HOSTNAME" == "envy" ]; then
 	    cp $image_var "${REPO_DIR}/${snapshot_name}"
     done
 fi
+
+cat .gitignore
 
 arr=($SPARSE_FILE_LIST); SPARSE_FILE_LIST="${arr[@]#/}"
 
