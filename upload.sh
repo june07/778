@@ -102,6 +102,8 @@ git config --global init.defaultBranch $BRANCH
 git config --global user.name "adrian@${HOSTNAME}"
 git config --global user.email "778@onezerohosting.com"
 
+SPARSE_FILE_LIST_MISC="/upload.sh /Automatic_backup_*.tar"
+
 if [ "$HOSTNAME" == "art" ]; then
 		SPARSE_FILE_LIST="/upload.sh /snapshot-1.jpg /snapshot-2.jpg ${IMAGE1#${REPO_DIR}/} ${IMAGE2#${REPO_DIR}/}"
 elif [ "$HOSTNAME" == "library" ]; then
@@ -109,7 +111,7 @@ elif [ "$HOSTNAME" == "library" ]; then
 elif [ "$HOSTNAME" == "aaliyah" ]; then
     SPARSE_FILE_LIST="/upload.sh /snapshot-*.jpg ${IMAGE1#${REPO_DIR}/} ${IMAGE2#${REPO_DIR}/} ${IMAGE3#${REPO_DIR}/} ${IMAGE4#${REPO_DIR}/} ${IMAGE5#${REPO_DIR}/} ${IMAGE6#${REPO_DIR}/} ${IMAGE7#${REPO_DIR}/} ${IMAGE8#${REPO_DIR}/}"
 elif [ "$HOSTNAME" == "envy" ]; then
-    SPARSE_FILE_LIST="/upload.sh /snapshot-*.jpg ${IMAGE3#${REPO_DIR}/} ${IMAGE4#${REPO_DIR}/} ${IMAGE5#${REPO_DIR}/} ${IMAGE6#${REPO_DIR}/} ${IMAGE7#${REPO_DIR}/} ${IMAGE8#${REPO_DIR}/}"
+    SPARSE_FILE_LIST="${SPARSE_FILE_LIST_MISC} /snapshot-*.jpg ${IMAGE3#${REPO_DIR}/} ${IMAGE4#${REPO_DIR}/} ${IMAGE5#${REPO_DIR}/} ${IMAGE6#${REPO_DIR}/} ${IMAGE7#${REPO_DIR}/} ${IMAGE8#${REPO_DIR}/}"
 fi
 
 # 2. Clone the repo if it doesn't exist locally yet (run this setup once beforehand)
@@ -266,6 +268,7 @@ git fetch origin "$BRANCH"
 git reset --hard "origin/$BRANCH"
 
 cp "$SCRIPT_PATH" "${REPO_DIR}"
+sudo rsync "/root/homeassistant/config/backups/*.tar" "${REPO_DIR}/homeassistant/"
 
 if [ "$HOSTNAME" == "art" ]; then
 	cp $IMAGE1 "${REPO_DIR}/snapshot-1.jpg"
