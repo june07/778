@@ -111,7 +111,7 @@ elif [ "$HOSTNAME" == "library" ]; then
 elif [ "$HOSTNAME" == "aaliyah" ]; then
     SPARSE_FILE_LIST="/upload.sh /snapshot-*.jpg ${IMAGE1#${REPO_DIR}/} ${IMAGE2#${REPO_DIR}/} ${IMAGE3#${REPO_DIR}/} ${IMAGE4#${REPO_DIR}/} ${IMAGE5#${REPO_DIR}/} ${IMAGE6#${REPO_DIR}/} ${IMAGE7#${REPO_DIR}/} ${IMAGE8#${REPO_DIR}/}"
 elif [ "$HOSTNAME" == "envy" ]; then
-    SPARSE_FILE_LIST="/upload.sh /homeassistant/backups /snapshot-*.jpg ${IMAGE3#${REPO_DIR}/} ${IMAGE4#${REPO_DIR}/} ${IMAGE5#${REPO_DIR}/} ${IMAGE6#${REPO_DIR}/} ${IMAGE7#${REPO_DIR}/} ${IMAGE8#${REPO_DIR}/}"
+    SPARSE_FILE_LIST="/upload.sh /homeassistant/backups/* /snapshot-*.jpg ${IMAGE3#${REPO_DIR}/} ${IMAGE4#${REPO_DIR}/} ${IMAGE5#${REPO_DIR}/} ${IMAGE6#${REPO_DIR}/} ${IMAGE7#${REPO_DIR}/} ${IMAGE8#${REPO_DIR}/}"
 fi
 
 # 2. Clone the repo if it doesn't exist locally yet (run this setup once beforehand)
