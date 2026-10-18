@@ -282,7 +282,7 @@ elif [ "$HOSTNAME" == "envy" ]; then
     mkdir -p "${REPO_DIR}/homeassistant/"
     sudo rsync -avu "/root/homeassistant/config/backups" "${REPO_DIR}/homeassistant/"
 
-    ls -la "${REPO_DIR}/homeassistant/"
+    ls -laR "${REPO_DIR}/homeassistant/"
     
     extra_cam_images=(
 	"storefront-outside-corner.jpg|$IMAGE3|snapshot-7.jpg"
