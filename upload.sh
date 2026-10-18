@@ -102,7 +102,7 @@ git config --global init.defaultBranch $BRANCH
 git config --global user.name "adrian@${HOSTNAME}"
 git config --global user.email "778@onezerohosting.com"
 
-SPARSE_FILE_LIST_HA=$(sudo ls /root/homeassistant/config/backups | grep ".tar" | sed 's|^|/homeassistant/backups/|' | tr '\n' ' ')
+SPARSE_FILE_LIST_HA=$(sudo ls /root/homeassistant/config/backups | grep ".tar" | sed 's|^|homeassistant/backups/|' | tr '\n' ' ')
 
 if [ "$HOSTNAME" == "art" ]; then
 		SPARSE_FILE_LIST="/upload.sh /snapshot-1.jpg /snapshot-2.jpg ${IMAGE1#${REPO_DIR}/} ${IMAGE2#${REPO_DIR}/}"
