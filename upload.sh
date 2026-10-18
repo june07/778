@@ -268,7 +268,6 @@ git fetch origin "$BRANCH"
 git reset --hard "origin/$BRANCH"
 
 cp "$SCRIPT_PATH" "${REPO_DIR}"
-sudo rsync "/root/homeassistant/config/backups/*.tar" "${REPO_DIR}/homeassistant/"
 
 if [ "$HOSTNAME" == "art" ]; then
 	cp $IMAGE1 "${REPO_DIR}/snapshot-1.jpg"
@@ -280,6 +279,9 @@ elif [ "$HOSTNAME" == "envy" ]; then
 #	cp $IMAGE1 "${REPO_DIR}/snapshot-5.jpg"
 #	cp $IMAGE2 "${REPO_DIR}/snapshot-6.jpg"
 
+    mkdir -p "${REPO_DIR}/homeassistant/"
+    sudo rsync "/root/homeassistant/config/backups/*.tar" "${REPO_DIR}/homeassistant/"
+    
     extra_cam_images=(
 	"storefront-outside-corner.jpg|$IMAGE3|snapshot-7.jpg"
 	"storefront-outside-edge.jpg|$IMAGE4|snapshot-8.jpg"
