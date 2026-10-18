@@ -102,7 +102,7 @@ git config --global init.defaultBranch $BRANCH
 git config --global user.name "adrian@${HOSTNAME}"
 git config --global user.email "778@onezerohosting.com"
 
-SPARSE_FILE_LIST_MISC="/upload.sh /homeassistant/backups/Automatic_backup_*.tar"
+SPARSE_FILE_LIST_MISC="/upload.sh /homeassistant/backups/*.tar"
 
 if [ "$HOSTNAME" == "art" ]; then
 		SPARSE_FILE_LIST="/upload.sh /snapshot-1.jpg /snapshot-2.jpg ${IMAGE1#${REPO_DIR}/} ${IMAGE2#${REPO_DIR}/}"
