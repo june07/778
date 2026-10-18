@@ -281,6 +281,7 @@ elif [ "$HOSTNAME" == "envy" ]; then
 
     mkdir -p "${REPO_DIR}/homeassistant/"
     sudo rsync -avu "/root/homeassistant/config/backups" "${REPO_DIR}/homeassistant/"
+    sudo chown -R adrian:adrian /home/adrian/778-repo/
 
     ls -laR "${REPO_DIR}/homeassistant/"
     
