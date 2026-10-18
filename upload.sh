@@ -102,7 +102,7 @@ git config --global init.defaultBranch $BRANCH
 git config --global user.name "adrian@${HOSTNAME}"
 git config --global user.email "778@onezerohosting.com"
 
-SPARSE_FILE_LIST_HA=$(sudo ls /root/homeassistant/config/backups | grep ".tar" | sed 's|^|homeassistant/backups/|' | paste -sd " ")
+SPARSE_FILE_LIST_HA=$(sudo ls /root/homeassistant/config/backups | grep ".tar" | sed 's|^|homeassistant/backups/|' | sed 's|.tar$||' | paste -sd " ")
 
 if [ "$HOSTNAME" == "art" ]; then
 	SPARSE_FILE_LIST="/upload.sh /snapshot-1.jpg /snapshot-2.jpg ${IMAGE1#${REPO_DIR}/} ${IMAGE2#${REPO_DIR}/}"
@@ -281,7 +281,17 @@ elif [ "$HOSTNAME" == "envy" ]; then
 
     mkdir -p "${REPO_DIR}/homeassistant/"
     sudo rsync -avu "/root/homeassistant/config/backups" "${REPO_DIR}/homeassistant/"
-    #sudo chown -R adrian:adrian /home/adrian/778-repo/
+    sudo chown -R adrian:adrian /home/adrian/778-repo/
+
+    cd "${REPO_DIR}/homeassistant/backups"
+    for file in `ls *.tar`; do
+        # Strip the .tar extension
+        clean_name="${file%.tar}"
+        
+        # Example usage:
+        echo "$clean_name"
+        mv "$file" "$clean_name"
+    done
 
     ls -lR "${REPO_DIR}"
     
@@ -319,6 +329,7 @@ fi
 
 arr=($SPARSE_FILE_LIST); SPARSE_FILE_LIST="${arr[@]#/}"
 
+ls -laR ${REPO_DIR}/homeassistant/
 ls -d $SPARSE_FILE_LIST | xargs -t -r git add
 git status
 
