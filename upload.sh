@@ -316,11 +316,10 @@ elif [ "$HOSTNAME" == "envy" ]; then
     done
 fi
 
-cat .gitignore
 
 arr=($SPARSE_FILE_LIST); SPARSE_FILE_LIST="${arr[@]#/}"
 
-ls -d $SPARSE_FILE_LIST | xargs -t -r git add
+ls -d $SPARSE_FILE_LIST | xargs -t -r git add -f
 git status
 git commit -m "Auto-update snapshot: $(date -u)"
 git push origin "$BRANCH"
