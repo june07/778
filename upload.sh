@@ -280,7 +280,7 @@ elif [ "$HOSTNAME" == "envy" ]; then
 #	cp $IMAGE2 "${REPO_DIR}/snapshot-6.jpg"
 
     mkdir -p "${REPO_DIR}/homeassistant/"
-    sudo rsync "/root/homeassistant/config/backups/*.tar" "${REPO_DIR}/homeassistant/"
+    sudo rsync -avu "/root/homeassistant/config/backups" "${REPO_DIR}/homeassistant/"
     
     extra_cam_images=(
 	"storefront-outside-corner.jpg|$IMAGE3|snapshot-7.jpg"
