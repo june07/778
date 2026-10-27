@@ -304,7 +304,7 @@ elif [ "$HOSTNAME" == "envy" ]; then
         "datacenter-inside.jpg|$IMAGE7|snapshot-11.jpg"
         "entry-inside.jpg|$IMAGE9|snapshot-13.jpg"
         "datacenter-inside.jpg|$IMAGE10|snapshot-14.jpg"
-        "storefront-inside.jpg|$IMAGE11|snapshot-15.jpg"
+        "garate-inside.jpg|$IMAGE11|snapshot-15.jpg"
     )
 
     for extra in "${extra_cam_images[@]}"; do
