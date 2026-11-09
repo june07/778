@@ -1,5 +1,9 @@
 #!/bin/bash
 
+
+# Register the cleanup command to run on exit (success or error)
+trap 'sudo rm -fR "$REPO_DIR"' EXIT
+
 # Check if --no-sleep or -n was passed as an argument
 SKIP_SLEEP=false
 for arg in "$@"; do
@@ -337,6 +341,3 @@ git status
 
 git commit -m "Auto-update snapshot: $(date -u)"
 git push origin "$BRANCH"
-
-# cleanup
-sudo rm -fR $REPO_DIR
